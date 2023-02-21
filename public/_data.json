@@ -1,0 +1,75 @@
+[
+  {
+  "id": 1,
+  "name": "DDR4 8GB",
+  "price": 25,
+  "clock": "2400 MHz",
+  "releaseDate": "21-12-2016",
+  "__src":"https://cdn.pixabay.com/photo/2013/07/12/17/56/cpu-152656_960_720.png",
+  "src":"ram-g9f64d818c_1280.jpg"
+},
+{
+  "id": 2,
+  "name": "DDR3 8GB",
+  "price": 15,
+  "clock": "1600 MHz",
+  "releaseDate": "21-12-2012",
+  "_src":"https://cdn.pixabay.com/photo/2016/10/27/03/44/processor-1773308_960_720.png",
+  "src":"ram-g9f64d818c_1280.jpg"
+},
+{
+  "id": 3,
+  "name": "DDR5 16GB",
+  "clock": "5600 MHz",
+  "price": 50,
+  "releaseDate": "16-12-2020",
+  "_src":"https://cdn.pixabay.com/photo/2016/10/27/03/44/processor-1773308_960_720.png",
+  "src":"ram-g9f64d818c_1280.jpg"
+},
+{
+  "id": 4,
+  "name": "DDR5 32GB",
+  "clock": "4600 MHz",
+  "price": 70,
+  "releaseDate": "21-12-2021",
+  "_src":"https://cdn.pixabay.com/photo/2021/04/16/10/19/chip-6183191_960_720.png",
+  "src":"ram-g9f64d818c_1280.jpg"
+},
+{
+  "id": 5,
+  "name": "DDR5 64GB",
+  "clock": "6400 MHz",
+  "price": 90,
+  "releaseDate": "11-10-2021",
+  "_src":"https://cdn.pixabay.com/photo/2016/03/31/20/07/board-1295513_960_720.png",
+  "src":"ram-g9f64d818c_1280.jpg"
+},
+{
+  "id": 6,
+  "name": "DDR4 16GB",
+  "clock": "2133 MHz",
+  "price": 30,
+  "releaseDate": "25-11-2015",
+  "_src":"https://cdn.pixabay.com/photo/2021/03/22/13/02/cpu-6114498_960_720.png",
+  "src":"ram-g9f64d818c_1280.jpg"
+},
+{
+  "id": 7,
+  "name": "DDR5 32GB",
+  "clock": "5200 MHz",
+  "price": 60,
+  "releaseDate": "21-12-2021",
+  "_src":"https://cdn.pixabay.com/photo/2021/04/16/10/19/chip-6183191_960_720.png",
+  "src":"ram-g9f64d818c_1280.jpg"
+},
+{
+  "id": 8,
+  "name": "DDR2 8GB",
+  "clock": "1200 MHz",
+  "price": 5,
+  "releaseDate": "21-04-2007",
+  "_src":"https://cdn.pixabay.com/photo/2021/04/16/10/19/chip-6183191_960_720.png",
+  "src":"ram-g9f64d818c_1280.jpg"
+}
+]
+
