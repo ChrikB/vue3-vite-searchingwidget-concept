@@ -6,7 +6,8 @@
     <h5>My favorites</h5>
     <h6 
       class="mt-5" 
-      v-if="favoriteProducts.length===0">
+      v-if="favoriteProducts.length===0"
+    >
       You have not favorites yet.<br>Click the 'heart' icon in top-left corner of each item to add it to favorites
     </h6>
     <div class="row items">
@@ -14,7 +15,7 @@
         class="col-3 col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3" 
         v-for="product in favoriteProducts" 
       >
-        <ProductComp  
+        <Product  
           :propProduct="product" 
           :details="false" 
           @updateFavorite="updateFavorite"
@@ -25,30 +26,23 @@
 </template>
 
 
-<script  lang="ts">
-import  type {ProductName, Criteria, Product} from './../interfaces';
-import { defineComponent } from 'vue';
-
-import ProductComp  from '../components/Product.vue'
-
-
-export default defineComponent({
-  name: 'Favorites',
-  components: {
-    ProductComp
-  },
-  data() { 
-    let THAT = this;
-    return {
-      favoriteProducts: THAT.myFavorites
-    }
-  },
-  methods:{
-    updateFavorite(){
-      this.favoriteProducts = [...this.myFavorites];
-    }
+<script>
+import Product from '../components/Product.vue'
+export default {
+name: 'Favorites',
+components: {
+    Product
+},
+data(){
+  let THAT = this;
+  return {
+    favoriteProducts: THAT.myFavorites
   }
-});
-
-
+},
+methods:{
+  updateFavorite(){
+    this.favoriteProducts = [...this.myFavorites];
+  }
+}
+}
 </script>

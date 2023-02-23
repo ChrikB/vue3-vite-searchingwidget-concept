@@ -11,11 +11,10 @@ import "./assets/main.css";
 
 const app = createApp(App);
 
-
 /* just a fast way to store global data for 'favorites' list */
-app.config.globalProperties['myFavorites'] = []; 
+app.config.globalProperties.myFavorites = []; 
 
-//app.use(createPinia());
+app.use(createPinia());
 app.use(router);
 
 app.mount("#app");

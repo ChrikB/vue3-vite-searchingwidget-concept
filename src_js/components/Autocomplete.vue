@@ -21,10 +21,7 @@
         v-if="searchOptions.length && showOptions===true"
         class="w-full rounded bg-white border border-gray-300 px-4 py-2 space-y-1 absolute z-10"
       >
-        <li 
-          class="w-100 mt-12 _px-1 _pt-1 _pb-2 font-bold border-b border-gray-200" 
-          v-if="showOptions===true"
-        >
+        <li class="w-100 mt-12 _px-1 _pt-1 _pb-2 font-bold border-b border-gray-200" v-if="showOptions===true">
           <b>{{ searchOptions.length }}</b> / {{ options.length }} results
         </li>
         <li aclass="w-100"
@@ -54,13 +51,11 @@ ul{
 
 
 
+<script>
 
-<script  lang="ts">
-import  type {ProductName, Criteria, Product} from './../interfaces';
+
 
 import {ref, computed} from 'vue'
-
-
 export default {
   name: 'Autocomplete',
   props: ['nameOptions', 'selected'],
@@ -92,19 +87,19 @@ export default {
       }    
       if (searchTerm.value === '') { 
         selectedOption.value = '';
-        selectOption(null);
+        selectOption();
         return []
       }
       let matches = 0;
-      return options.filter( (option:  ProductName) => {
-        if (option&&option.name&&option.name.toLowerCase().includes(searchTerm.value.toLowerCase()) && matches < 10) {
+      return options.filter(option => {
+        if (option.name.toLowerCase().includes(searchTerm.value.toLowerCase()) && matches < 10) {
           matches++
           return option
         }
       })
             
     });
-    const selectOption = (option : string|any) => { 
+    const selectOption = (option) => { 
       showOptions = false;
       selectedOption.value = option;
       searchTerm.value =  option;
@@ -125,6 +120,3 @@ export default {
 
 }
 </script>
-
-
-

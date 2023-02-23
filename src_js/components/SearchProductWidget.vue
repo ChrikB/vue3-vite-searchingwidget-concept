@@ -27,6 +27,7 @@
     <div 
       class="note note-search-1 pt-3" 
       :class="{'visible':isPriceFilterMax}" 
+      av-if="isPriceFilterMax"
     >You may hide results if price is not at max</div>
   </form>
 </template>
@@ -45,26 +46,12 @@
   }
 </style>
 
+<script>
+ import Autocomplete from './Autocomplete.vue';
 
-
-<script  lang="ts">
-  import  type {ProductName, Criteria, Product} from './../interfaces';
-  import { defineComponent } from 'vue';
-
-  import Autocomplete from './Autocomplete.vue';
-
-
-
- export default defineComponent({
+ export default {
   name: 'SearchProductWidget',
-  props: {
-    productNames: {
-      type: Array
-    }, 
-    searchQ: {
-      type: Object
-    }
-  },
+  props: ['productNames', 'searchQ'],
   components: {
     Autocomplete
   },
@@ -72,12 +59,12 @@
      return {
        search: {
          id: null,
-         name: '' as any,
+         name: '',
          price: {
            min: 1,
            max: 100
          }  
-       } as Criteria,
+       },
        pointerLeft: 200,
        isPriceFilterMax: true
      }
@@ -85,8 +72,8 @@
   watch: {
     searchQ: {
       handler(newValue, oldValue) {
-        this.search.name = this.searchQ!.name;
-        this.search.price.max = this.searchQ!.price.max;
+        this.search.name = this.searchQ.name;
+        this.search.price.max = this.searchQ.price.max;
         this.setPointerPosition();
       },
       deep: true
@@ -105,38 +92,22 @@
 
   updated(){
     this.setPointerPosition();
-    if (  this.$refs && this.$refs.pricefield &&  (this.$refs.pricefield as HTMLInputElement).getAttribute('max') && this.search.price && this.search.price.max){
-        this.isPriceFilterMax = parseInt( ((this.$refs.pricefield as HTMLInputElement).getAttribute('max')  as string).toString() ,10) > this.search.price.max;
-    }
+     if (  this.$refs && this.$refs.pricefield ){
+        this.isPriceFilterMax = parseInt(this.$refs.pricefield.getAttribute('max'),10) > this.search.price.max;
+     }
   },
   methods:{
     setPointerPosition(){
-
-      let rangeEl = document.getElementById('productMaxPrice') as HTMLElement;
-      if (rangeEl != null) {
-        let uiWidth: number = parseInt(rangeEl.offsetWidth.toString(), 10);
-        let d: number;
-        if ( rangeEl.getAttribute('max') !== null) {
-          d = uiWidth/parseInt( (rangeEl.getAttribute('max')  as string).toString(), 10);
-        } else {
-          d = 1;
-        }
-        if (this.search && this.search.price && this.search.price.max) {
-          this.pointerLeft = (this.search.price.max*d)-25;  
-        }else {
-          this.pointerLeft = 200;
-        }
-      }
-
+      let rangeEl = document.getElementById('productMaxPrice');
+      let uiWidth = parseInt(rangeEl.offsetWidth, 10);
+      let d = uiWidth/parseInt(rangeEl.getAttribute('max'));
+      this.pointerLeft = (this.search.price.max*d)-25;  
     },   
     updateParentProp(){  
-      this.search.name = (this.$refs.selected as any).selectedOption; 
+      this.search.name = this.$refs.selected.selectedOption; 
       this.$emit('zcriteria', this.search);
     }
   }
-
- });
+ }
 
 </script>
-
-

@@ -28,18 +28,18 @@
 
 
 
-<script  lang="ts">
-
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'About',
-  props: {}
-
-});
 
 
+<script>
+export default {
+name: 'About',
+props: {}
+}
 </script>
+
+
+
+
 
 
 <style scoped>

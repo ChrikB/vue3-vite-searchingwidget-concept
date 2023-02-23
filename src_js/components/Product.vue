@@ -6,12 +6,12 @@
 
     <div 
       class="item-data-container row g-0 apb-0"
-      v-if="product&&product.id"  
+      v-if="product"  
       :class="{'comeout': product.comeout}"
     >
       <div 
         class="col product-thumb-cont"   
-        @click="$router.push('/products/'+ product!.id)"   
+        @click="$router.push('/products/'+ product.id)"   
       >
 
         <div class="position-relative" >
@@ -120,178 +120,6 @@
     </div>
   </div>
 </template>
-
-
-
-<script  lang="ts">
-  import  type {ProductName, Criteria, Product} from './../interfaces';
-  import { defineComponent } from 'vue';
-
-  import { useFetch } from '../common/fetchProducts.js'  
-
-
-  declare module '@vue/runtime-core' {
-    export interface ComponentCustomProperties {
-      myFavorites: Product[]
-    }
-  }
-
-
-
-
-  export default defineComponent({
-
-    name: 'ProductProp',
-    props: {
-      propProduct: {
-        type: Object
-      },
-      id: {
-        type: [Number, String] 
-      },
-      details: {
-        type: Boolean
-      }
-    },
-    data() { 
-      return {
-        loading: false,
-        product: null as  Product|null,
-        error: null,
-      //  details: false,
-        fetched: false,
-        currentPathId: null as  string|null|boolean
-      }
-    },
-    watch: {
-      propProduct: {
-        handler(newQuestion) {   
-          this.init(); 
-        },
-        immediate: true
-      }
-    },
-    created() { 
-      // watch the params of the route to fetch the data again
-      let that = this;
-      this.$watch(
-        () => this.$route.params,
-        () => {    
-          let idd: string|boolean = this.$route.params.id?this.$route.params.id[0]:false;
-          if (this.currentPathId!= idd){
-            this.currentPathId = idd;
-            this.fetched = false;
-          }
-          this.fetchData( idd ) ; 
-        },
-        { immediate: true }
-      );
-  
-    },
-    methods: {
-      isValidHttpUrl(str: string) {
-        let url;
-        try {
-         url = new URL(str);
-        } catch (_) {
-          return false;
-        }
-        return url.protocol === "http:" || url.protocol === "https:";
-      },
-
-
-      getPath(x: string){ 
-        /* means that img path is http */
-        if ( this.isValidHttpUrl(x) ) {
-          return x;
-        }
-
-        return new URL( import.meta.env.BASE_URL + x, import.meta.url).href;
-      },
-
-
-      isFavorite(){ 
-        if (!this.product||!this.product.id) {
-          return false;
-        }
-        let chek = this.myFavorites.find( (c: Product) => c.id === this.product!.id);
-        if (chek === undefined) {
-          return false;
-        }
-        return true;
-      },
-
-      addFavorite(){
-
-        if (this.product&&this.product.id){ 
-          let chek = this.myFavorites.find( (c: Product) => c.id === this.product!.id);
-          if (chek === undefined) {
-              this.myFavorites.push({...this.product});
-          }else {
-              this.myFavorites.splice(this.myFavorites.findIndex( (item: Product) => item.id === this.product!.id), 1);          
-          }
-        }
-        this.$forceUpdate(); 
-        this.$emit('updateFavorite', {x:'tes'} );
-      },
-
-
-      init() { 
-          if (this.propProduct) {
-            let p = this.propProduct;
-            this['product'] = p as Product;
-          }else {
-            this['product'] = null;
-          }
-      },
-
-      fetchData(forceId :string|boolean) { 
-        let THAT = this;
-        /* no need to fetch if item data pass directly from props */ 
-        if (   (this.id && !this.product) || (this.id && this.product && this.product.id != this.id) 
-          || (forceId && this.product && this.product.id == this.id && !this.fetched)
-        ){ 
-          this.fetched = false;
-          this.loading = true;
-
-          let idz;
-          if(!THAT.id) {
-            idz = "1";
-          }else{
-            idz = THAT.id.toString();
-          }
-          let idToGet = (forceId&&THAT.id!=forceId)?forceId:parseInt(  idz, 10);
-          if (forceId && THAT.id && this.product && this.product.id == this.id) {
-              idToGet = parseInt(forceId.toString() ,10);
-          } else {
-              idToGet = parseInt(idz, 10);
-          }
-        
-
-          let { data, error } = useFetch(import.meta.env.BASE_URL + '_data.json', { id: idToGet}, function(z : Array<Product>){        
-              THAT.product = z[0];  
-              THAT.loading = false;       
-              THAT.fetched = true;
-          });
-        
-        }
-
-      }
-
-
-
-    }
-
-
-  });
-
-
-
-</script>
-
-
-
-
 
 <style scoped>
 
@@ -410,3 +238,152 @@ but make it look like not a form if is not editable */
   margin:0;
 }
 </style> 
+
+<script>
+
+import { useFetch } from '../common/fetchProducts.js'  
+
+
+export default {
+name: 'Product',
+props: [
+    'propProduct',
+    'id',
+    'details'
+],
+data() { 
+  return {
+    loading: false,
+    product: null,
+    error: null,
+  //  details: false,
+    fetched: false,
+    currentPathId: null
+  }
+},
+watch: {
+  propProduct: {
+    handler(newQuestion) {   
+      this.init(); 
+    },
+   immediate: true
+  }
+},
+created() { 
+  // watch the params of the route to fetch the data again
+  let that = this;
+  this.$watch(
+    () => this.$route.params,
+    () => {    
+      let idd = this.$route.params.id?this.$route.params.id[0]:false;
+      if (this.currentPathId!= idd){
+        this.currentPathId = idd;
+        this.fetched = false;
+      }
+      this.fetchData( idd ) ; 
+    },
+    { immediate: true }
+  );
+  
+},
+updated(){
+  /*
+  return;  
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Element');
+    data.addColumn('number', 'Percentage');
+    data.addRows([
+      ['Nitrogen', 0.78],
+      ['Oxygen', 0.21],
+      ['Other', 0.01]
+    ]);
+    var chart = new google.visualization.PieChart(document.getElementById('myPieChart'));
+    chart.draw(data, null);
+  }
+*/
+
+},
+methods: {
+  isValidHttpUrl(string) {
+      let url;
+      try {
+        url = new URL(string);
+      } catch (_) {
+        return false;
+      }
+      return url.protocol === "http:" || url.protocol === "https:";
+  },
+
+
+  getPath(x){ 
+      /* means that img path is http */
+      if ( this.isValidHttpUrl(x) ) {
+        return x;
+      }
+
+      return new URL( import.meta.env.BASE_URL + x, import.meta.url).href;
+  },
+
+
+  isFavorite(){ 
+
+    let chek = this.myFavorites.find(c => c.id === this.product.id);
+    if (chek === undefined) {
+      return false;
+    }
+    return true;
+  },
+
+
+  addFavorite(){
+
+    if (this.product){ 
+      let chek = this.myFavorites.find(c => c.id === this.product.id);
+      if (chek === undefined) {
+          this.myFavorites.push({...this.product});
+      }else {
+          this.myFavorites.splice(this.myFavorites.findIndex(item => item.id === this.product.id), 1);          
+      }
+    }
+    this.$forceUpdate(); 
+    this.$emit('updateFavorite', {x:'tes'} );
+  },
+
+
+  init() { 
+      this.product = this.propProduct;  
+  },
+
+
+  fetchData(forceId) { 
+    let THAT = this;
+    /* no need to fetch if item data pass directly from props */ 
+    if (   (this.id && !this.product) || (this.id && this.product && this.product.id != this.id) 
+      || (forceId && this.product && this.product.id == this.id && !this.fetched)
+    ){ 
+      this.fetched = false;
+      this.loading = true;
+      let idToGet = (forceId&&THAT.id!=forceId)?forceId:parseInt(THAT.id,10);
+      if (forceId && THAT.id && this.product && this.product.id == this.id) {
+          idToGet = parseInt(forceId ,10);
+      } else {
+          idToGet = parseInt(THAT.id,10);
+      }
+
+      
+      let { data, error } = useFetch(import.meta.env.BASE_URL + '_data.json', { id: idToGet}, function(z){        
+          THAT.product = z[0];  
+          THAT.loading = false;       
+          THAT.fetched = true;
+      });
+
+    }
+
+  }
+}
+}
+
+</script>

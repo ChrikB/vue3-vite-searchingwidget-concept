@@ -36,3 +36,20 @@ export default defineComponent({
 
 
 
+<!-- 
+  
+<script>
+
+export default {
+  name: 'App',
+  components: {},
+  mounted() {
+    this.$router.push({ path: '/products/' });
+  },
+  methods: {}
+};
+</script>
+
+-->
+
+

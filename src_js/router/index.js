@@ -1,6 +1,6 @@
 import{createRouter, createWebHistory} from 'vue-router'
 import About from '../views/About.vue'
-import ProductComp from '../components/Product.vue'
+import Product from '../components/Product.vue'
 import Products from '../views/ProductList.vue'
 
 import ProductView from '../views/ProductView.vue'
@@ -21,7 +21,7 @@ const routes =[
       props: route => ({ criteria: { name: null, price: {max: 100} }      }) 
   },
   { path:'/products/:id+', name: 'ProductView', component: ProductView , sensitive: true, props: true},
-  { path:'/aproducts/:id+', name: 'Product', component: ProductComp , sensitive: true, props: true}
+  { path:'/aproducts/:id+', name: 'Product', component: Product , sensitive: true, props: true}
 ];
 
 
